@@ -1,10 +1,10 @@
 ﻿namespace CandyMarket
 {
-    enum CandyType
-    {
-        Taffy = 1,
-        CandyCoated,
-        ChocolateBar,
-        Zagnut
-    }
+	enum CandyType
+	{
+		TaffyNotLaffy = 1,
+		CandyCoated,
+		CompressedSugar,
+		ZagnutStyle
+	}
 }
