@@ -12,7 +12,11 @@ namespace CandyMarket
 		private int _countOfChocolateBar;
 		private int _countOfZagnut;
 
-		public Dictionary<CandyType, List<string>> BagOfCandy { get; set; }
+		/**
+		 * this is just an example.
+		 * feel free to modify the definition of this collection "BagOfCandy" if you choose to implement the more difficult data model.
+		 * Dictionary<CandyType, List<Candy>> BagOfCandy { get; set; }
+		 */
 
 		public DatabaseContext(int tone) => Console.Beep(tone, 2500);
 
