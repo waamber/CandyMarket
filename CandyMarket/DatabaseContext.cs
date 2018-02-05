@@ -31,7 +31,11 @@ namespace CandyMarket
 				.ToList();
 		}
 
-        
+        internal void GetAllCandy()
+        {
+            Console.WriteLine($"Taffy - {_countOfTaffy}, Candy Coated - {_countOfCandyCoated}, Chocolate Bar - {_countOfChocolateBar}, Zagnut - {_countOfZagnut}");
+        }
+
 		internal void SaveNewCandy(char selectedCandyMenuOption)
 		{
 			var candyOption = int.Parse(selectedCandyMenuOption.ToString());
