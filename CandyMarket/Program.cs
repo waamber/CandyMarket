@@ -25,24 +25,20 @@ namespace CandyMarket
 
                         // select a candy type
                         var selectedCandyType = AddNewCandyType(db);
-
-                        /** MORE DIFFICULT DATA MODEL
-						 * show a new menu to enter candy details
-						 * it would be convenient to show the menu in stages e.g. press enter to go to next detail stage, but write the whole screen again with responses populated so far.
-						 */
-
-                        CandyDetailMenu();
-                        // if(moreDifficultDataModel) bug - this is passing candy type right now (which just increments in our DatabaseContext), but should also be passing candy details
                         db.SaveNewCandy(selectedCandyType.KeyChar);
+                        //db.GetAllCandy();
                         break;
                     case '2':
                         // eat candy
-                        EatCandy(db);
-                        RemoveCandy(db);
+
+                        var eatenCandy = EatenCandy(db);
+                        db.RemoveNewCandy(eatenCandy.KeyChar);
+                        //EatCandy(db);
+                        //RemoveCandy(db);
                         
                         break;
                     case '3':
-                        RemoveCandy(db);
+                        //RemoveCandy(db);
                         /** throw away candy
 						 * select a candy type
 						 * if(moreDifficultDataModel) enhancement - give user the option to throw away old candy in one action. this would require capturing the detail of when the candy was new.
@@ -116,31 +112,24 @@ namespace CandyMarket
 
         static void RemoveCandy(DatabaseContext db)
         {
-            var selectedCandy = EatCandy(db);
+            var selectedCandy = EatenCandy(db);
             db.RemoveNewCandy(selectedCandy.KeyChar);
         }
 
-        static ConsoleKeyInfo EatCandy(DatabaseContext db)
+        static ConsoleKeyInfo EatenCandy(DatabaseContext db)
         {
             var candyTypes = db.GetCandyTypes();
 
             var eatCandyMenu = new View()
                     .AddMenuText("What type of candy did you eat?")
                     .AddMenuOptions(candyTypes);
+
             Console.Write(eatCandyMenu.GetFullMenu());
-            ConsoleKeyInfo selectedCandy = Console.ReadKey();
-            return selectedCandy;
+            ConsoleKeyInfo eatenCandy = Console.ReadKey();
+            return eatenCandy;
         }
 
-        static ConsoleKeyInfo CandyDetailMenu()
-        {
-            View candyDetailMenu = new View()
-                    .AddMenuOption("Eat it now?")
-                    .AddMenuOption("Eat it later?")
-                    .AddMenuOption("I will never eat this");
-            Console.WriteLine(candyDetailMenu.GetFullMenu());
-            ConsoleKeyInfo userOption = Console.ReadKey();
-            return userOption;
-        }
+       
+        
     }
 }
