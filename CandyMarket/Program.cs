@@ -36,19 +36,13 @@ namespace CandyMarket
                         db.SaveNewCandy(selectedCandyType.KeyChar);
                         break;
                     case '2':
-                        /** eat candy
-						 * select a candy type
-                         *
-						 * 
-						 * select specific candy details to eat from list filtered to selected candy type
-						 * 
-						 * enjoy candy
-						 */
-
+                        // eat candy
                         EatCandy(db);
-                        //CandyBag(db);
+                        RemoveCandy(db);
+                        
                         break;
                     case '3':
+                        RemoveCandy(db);
                         /** throw away candy
 						 * select a candy type
 						 * if(moreDifficultDataModel) enhancement - give user the option to throw away old candy in one action. this would require capturing the detail of when the candy was new.
@@ -120,22 +114,20 @@ namespace CandyMarket
             return selectedCandyType;
         }
 
-        static void EatCandy(DatabaseContext db)
+        static void RemoveCandy(DatabaseContext db)
         {
-            var selectedCandy = EatCandyType(db);
+            var selectedCandy = EatCandy(db);
             db.RemoveNewCandy(selectedCandy.KeyChar);
         }
 
-        static ConsoleKeyInfo EatCandyType(DatabaseContext db)
+        static ConsoleKeyInfo EatCandy(DatabaseContext db)
         {
             var candyTypes = db.GetCandyTypes();
 
             var eatCandyMenu = new View()
                     .AddMenuText("What type of candy did you eat?")
                     .AddMenuOptions(candyTypes);
-
             Console.Write(eatCandyMenu.GetFullMenu());
-
             ConsoleKeyInfo selectedCandy = Console.ReadKey();
             return selectedCandy;
         }
