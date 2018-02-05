@@ -26,27 +26,22 @@ namespace CandyMarket
                         // select a candy type
                         var selectedCandyType = AddNewCandyType(db);
                         db.SaveNewCandy(selectedCandyType.KeyChar);
-                        //db.GetAllCandy();
+    
                         break;
                     case '2':
                         // eat candy
 
                         var eatenCandy = EatenCandy(db);
                         db.RemoveNewCandy(eatenCandy.KeyChar);
-                        //EatCandy(db);
-                        //RemoveCandy(db);
                         
                         break;
                     case '3':
-                        //RemoveCandy(db);
-                        /** throw away candy
-						 * select a candy type
-						 * if(moreDifficultDataModel) enhancement - give user the option to throw away old candy in one action. this would require capturing the detail of when the candy was new.
-						 * 
-						 * select specific candy details to throw away from list filtered to selected candy type
-						 * 
-						 * cry for lost candy
-						 */
+
+                        //throw away candy
+
+                        var candyThrownAway = AddNewCandyType(db);
+                        db.RemoveNewCandy(candyThrownAway.KeyChar);
+
                         break;
                     case '4':
                         /** give candy
@@ -86,14 +81,22 @@ namespace CandyMarket
 
         static ConsoleKeyInfo MainMenu()
         {
+            var candies = GetCandy();
             View mainMenu = new View()
+                    .AddMenuText(candies)
                     .AddMenuOption("Did you just get some new candy? Add it here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
+                    .AddMenuOption("Do you want to throw away some candy?")
                     .AddMenuText("Press 0 to exit.");
 
             Console.Write(mainMenu.GetFullMenu());
             ConsoleKeyInfo userOption = Console.ReadKey();
             return userOption;
+        }
+
+        static void GetCandy(DatabaseContext db)
+        {
+             db.GetAllCandy();
         }
 
         static ConsoleKeyInfo AddNewCandyType(DatabaseContext db)
@@ -129,6 +132,7 @@ namespace CandyMarket
             return eatenCandy;
         }
 
+        
        
         
     }
