@@ -57,14 +57,21 @@ namespace CandyMarket
 			}
 		}
 
-        internal void RemoveNewCandy(char selectedCandyMenuOption)
+        internal void AddNewCandy(char selectedCandy)
         {
-            var candyOption = int.Parse(selectedCandyMenuOption.ToString());
+            var candyOption = int.Parse(selectedCandy.ToString());
 
-            var maybeCandyMaybeNot = (CandyType)selectedCandyMenuOption;
-            var forRealTheCandyThisTime = (CandyType)candyOption;
 
-            switch (forRealTheCandyThisTime)
+        }
+
+        internal void RemoveNewCandy(char selectedCandy)
+        {
+            var candyOption = int.Parse(selectedCandy.ToString());
+
+            var candySelected = (CandyType)selectedCandy;
+            var optionCandy= (CandyType)candyOption;
+
+            switch (optionCandy)
             {
                 case CandyType.TaffyNotLaffy:
                     --_countOfTaffy;
