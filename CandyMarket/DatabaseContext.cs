@@ -7,19 +7,11 @@ namespace CandyMarket
 {
 	internal class DatabaseContext
 	{
-		private int _countOfTaffy;
-		private int _countOfCandyCoated;
-		private int _countOfChocolateBar;
-		private int _countOfZagnut;
-        public string CandyDetail { get; set; }
-  
-
-		/**
-		 * this is just an example.
-		 * feel free to modify the definition of this collection "BagOfCandy" if you choose to implement the more difficult data model.
-		 * Dictionary<CandyType, List<Candy>> BagOfCandy { get; set; }
-		 */
-
+        Dictionary<string, int> _taffy = new Dictionary<string, int>(); //if _taffy isn't intialized, it will default to null
+        Dictionary<string, int> _compressedSugar= new Dictionary<string, int>();
+        Dictionary<string, int> _chocolateBar = new Dictionary<string, int>();
+        Dictionary<string, int> _zagnut = new Dictionary<string, int>();
+        
 		public DatabaseContext(int tone) => Console.Beep(tone, 2500);
 
 		internal List<string> GetCandyTypes()
@@ -31,61 +23,69 @@ namespace CandyMarket
 				.ToList();
 		}
 
-        internal void GetAllCandy()
-        {
-            Console.WriteLine($"Taffy - {_countOfTaffy}, Candy Coated - {_countOfCandyCoated}, Chocolate Bar - {_countOfChocolateBar}, Zagnut - {_countOfZagnut}");
-        }
-
-		internal void SaveNewCandy(char selectedCandyMenuOption)
+        internal void SaveNewCandy(string userName, CandyType candyType, int howMany) //save candy type and the amount of candy
 		{
-			var candyOption = int.Parse(selectedCandyMenuOption.ToString());
+            if (!_taffy.ContainsKey(userName)) //if taffy dictionary does not contain userName key
+            {
+                _taffy.Add(userName, 0);
+                _compressedSugar.Add(userName, 0);
+                _chocolateBar.Add(userName, 0);
+                _zagnut.Add(userName, 0);
+            }
 
-			var maybeCandyMaybeNot = (CandyType)selectedCandyMenuOption;
-			var forRealTheCandyThisTime = (CandyType)candyOption;
-
-			switch (forRealTheCandyThisTime)
+            switch (candyType)
 			{
 				case CandyType.TaffyNotLaffy:
-					++_countOfTaffy;
+					_taffy[userName] += howMany;
 					break;
-				case CandyType.CandyCoated:
-					++_countOfCandyCoated;
+				case CandyType.ChocolateBar:
+					_chocolateBar[userName] += howMany;
 					break;
 				case CandyType.CompressedSugar:
-					++_countOfChocolateBar;
+					_compressedSugar[userName] += howMany;
 					break;
 				case CandyType.ZagnutStyle:
-					++_countOfZagnut;
+					_zagnut[userName] += howMany;
 					break;
 				default:
 					break;
 			}
 		}
 
-        internal void RemoveNewCandy(char selectedCandy)
+        internal void RemoveCandy(string name, CandyType type)
         {
-            var candyOption = int.Parse(selectedCandy.ToString());
-
-            var maybeCandyMaybeNot = (CandyType)selectedCandy;
-            var forRealTheCandyThisTime = (CandyType)candyOption;
-
-            switch (forRealTheCandyThisTime)
+            switch (type)
             {
                 case CandyType.TaffyNotLaffy:
-                    --_countOfTaffy;
+                    if (_taffy[name] > 0)
+                    {
+                        _taffy[name]--; 
+                    }
                     break;
-                case CandyType.CandyCoated:
-                    --_countOfCandyCoated;
+                case CandyType.ChocolateBar:
+                    if (_chocolateBar[name] > 0)
+                    {
+                        _chocolateBar[name]--; 
+                    }
                     break;
                 case CandyType.CompressedSugar:
-                    --_countOfChocolateBar;
+                    if (_compressedSugar[name] > 0)
+                    {
+                        _compressedSugar[name]--; 
+                    }
                     break;
                 case CandyType.ZagnutStyle:
-                    --_countOfZagnut;
+                    if (_zagnut[name] > 0)
+                    {
+                        _zagnut[name]--; 
+                    }
                     break;
                 default:
                     break;
             }
+
+
+        }
+
         }
     }
-}
