@@ -8,8 +8,12 @@ namespace CandyMarket
     {
         static void Main(string[] args)
         {
+
+
             // wanna be a l33t h@x0r? skip all this console menu nonsense and go with straight command line arguments. something like `candy-market add taffy "blueberry cheesecake" yesterday`
             var db = SetupNewApp();
+            var me = new Friends("Amber", db);
+            var friend = new Friends("Karen", db);
 
             var run = true;
             while (run)
@@ -21,26 +25,28 @@ namespace CandyMarket
                     case '0':
                         run = false;
                         break;
-                    case '1': // add candy to your bag
-
+                    case '1': 
+                        // add candy to your bag
                         // select a candy type
                         var selectedCandyType = AddNewCandyType(db);
-                        db.SaveNewCandy(selectedCandyType.KeyChar);
-    
+                        var candyType = (CandyType)int.Parse(selectedCandyType.KeyChar.ToString()); //take key that was pressed and turning it into a string, then turning it into an int then turning it to candytype enum
+                        me.AddCandy(candyType, 1); //adding candy type and one of that type
+                        
                         break;
                     case '2':
                         // eat candy
 
-                        var eatenCandy = EatenCandy(db);
-                        db.RemoveNewCandy(eatenCandy.KeyChar);
-                        
+                        var eatenCandy = AddNewCandyType(db);
+                        var eatenCandyType = (CandyType)int.Parse(selectedCandyType.KeyChar.ToString());
+                        db.RemoveCandy("Amber", eatenCandyType);
+
                         break;
                     case '3':
-
                         //throw away candy
 
                         var candyThrownAway = AddNewCandyType(db);
-                        db.RemoveNewCandy(candyThrownAway.KeyChar);
+                        var thrownAwayType = (CandyType)int.Parse(selectedCandyType.KeyChar.ToString());
+                        db.RemoveCandy("Amber", thrownAwayType);
 
                         break;
                     case '4':
@@ -53,6 +59,11 @@ namespace CandyMarket
 						 * you'll need a way to select what user you're giving candy to.
 						 * one design suggestion would be to put candy "on the table" and then "give the candy on the table" to another user once you've selected all the candy to give away
 						 */
+
+
+                        var candyGivingAway = AddNewCandyType(db);
+                        //give to new user??
+                        //db.RemoveNewCandy(candyGivingAway.KeyChar);
                         break;
                     case '5':
                         /** trade candy
@@ -81,22 +92,17 @@ namespace CandyMarket
 
         static ConsoleKeyInfo MainMenu()
         {
-            var candies = GetCandy();
+            
             View mainMenu = new View()
-                    .AddMenuText(candies)
                     .AddMenuOption("Did you just get some new candy? Add it here.")
                     .AddMenuOption("Do you want to eat some candy? Take it here.")
                     .AddMenuOption("Do you want to throw away some candy?")
+                    .AddMenuOption("Do you want to give candy to a friend?")
                     .AddMenuText("Press 0 to exit.");
 
             Console.Write(mainMenu.GetFullMenu());
             ConsoleKeyInfo userOption = Console.ReadKey();
             return userOption;
-        }
-
-        static void GetCandy(DatabaseContext db)
-        {
-             db.GetAllCandy();
         }
 
         static ConsoleKeyInfo AddNewCandyType(DatabaseContext db)
@@ -111,12 +117,6 @@ namespace CandyMarket
 
             ConsoleKeyInfo selectedCandyType = Console.ReadKey();
             return selectedCandyType;
-        }
-
-        static void RemoveCandy(DatabaseContext db)
-        {
-            var selectedCandy = EatenCandy(db);
-            db.RemoveNewCandy(selectedCandy.KeyChar);
         }
 
         static ConsoleKeyInfo EatenCandy(DatabaseContext db)
