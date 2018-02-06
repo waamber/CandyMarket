@@ -27,5 +27,6 @@ namespace CandyMarket
             _db.SaveNewCandy(reciever, type, 1);
         }
 
-     }
+       
+    }
 }
